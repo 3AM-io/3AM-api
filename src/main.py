@@ -1,16 +1,29 @@
-import speech_recognition as sr
-def takeCommand():
-    #It takes microphone input from the user and returns string output    
-     r = sr.Recognizer()
-     with sr.Microphone() as source:
-         print("Listening...")
-         r.pause_threshold = 1
-         audio = r.listen(source)
-
-         print("Recognizing...")    
-         query = r.recognize_google(audio, language='en-in') #Using google for voice recognition.
-         print(f"User said: {query}\n")  #User query will be printed.    
-        
-     return query
-
-takeCommand()
+from speak import speak
+from speechrecognition import takeCommand
+from email_own import sendEmail
+from wish_init import wishMe
+from music import playmusic
+if __name__=="__main__" :
+    wishMe()
+    #speak("Listening")
+    #query = takeCommand()
+    # print(query)
+    query = "send a email"
+    #query="play music"
+    speak(f"The recognized text is{query}")
+    if 'send a email' in query:
+        try:
+            speak("What should I say?")
+            #content = takeCommand()
+            content="hi"
+            speak("What is the receiver email id")
+            #to = takeCommand()    
+            to="rameshnagarajan09@gmail.com"
+            sendEmail(to, content)
+            print("Email has been sent")
+            speak("Email has been sent")
+        except Exception as e:
+            print(e)
+            speak("Sorry sir. I am not able to send this email")
+    # elif 'play music' in query:
+    #     playmusic()
