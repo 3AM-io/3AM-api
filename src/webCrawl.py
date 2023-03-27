@@ -3,6 +3,7 @@ from googlesearch import search
 from bs4 import BeautifulSoup
 import requests
 from summerizerRes import summery
+from speak import speak
 
 # Search Query as URL
 def searchSite(site: str):
@@ -11,7 +12,12 @@ def searchSite(site: str):
     
 # Summerizer
 def getSummeryFromURL(url: str):
-    response = requests.get(str)
+    response = None
+    try:
+        response = requests.get(str)
+    except:
+        speak("There's an unusual error. Try again later")
+
     responseFile = open(".tempResponse.html", "w")
     responseFile.write(str(response.content))
 
