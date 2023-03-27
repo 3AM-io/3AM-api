@@ -4,6 +4,7 @@ from email_own import sendEmail
 from wish_init import wishMe
 from music import playmusic
 from webCrawl import *
+from spotify import playsong
 
 if __name__=="__main__" :
     # Get query
@@ -35,6 +36,10 @@ if __name__=="__main__" :
         except Exception as e:
             speak("That web page does not exist")
     
+    elif 'play music' in query:
+        speak("Which song to play")
+        song_name = takeCommand()
+        playsong(song_name)
 
     # Content search will be searched as a final executable
     else:
