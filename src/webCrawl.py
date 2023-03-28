@@ -1,5 +1,5 @@
 import webbrowser
-from googlesearch import search
+#from googlesearch import search
 from bs4 import BeautifulSoup
 import requests
 from summerizerRes import summery
