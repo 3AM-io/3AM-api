@@ -1,23 +1,29 @@
 from speak import speak
 from speechrecognition import takeCommand
-from email_own import sendEmail
+from email_own import sendEmail, email
 from wish_init import wishMe
 from webCrawl import *
-from spotify import playsong
-from youtube import youtubeSearch
 
 if __name__=="__main__" :
     
     # Greet
     wishMe()
 
-    # Get query
-    #query = list(takeCommand()).lower()
     
     query = "play songs"
 
     # Email client
-    if 'send' in query and 'email' in query:
+    if 'read' in query and 'mails' in query:
+        print("New Mail?")
+        while 1:
+            length = email.checkMail()
+            if length > 0:
+                speak(f"You got {length} mails")
+                print(email.readLatest())
+                break
+            time.sleep(60)
+
+    elif 'send' in query and 'email' in query:
         try:
             speak("What should I say?")
             content = takeCommand()
