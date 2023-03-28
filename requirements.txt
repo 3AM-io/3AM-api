@@ -1,3 +1,4 @@
+django==4.1.7
 speechRecognition==3.10.0
 pyttsx3==2.90
 datetime==5.1
