@@ -3,25 +3,37 @@ from speechrecognition import takeCommand
 from email_own import sendEmail, email
 from wish_init import wishMe
 from webCrawl import *
+from youtube import youtubeSearch
+import time
+
 
 if __name__=="__main__" :
     
     # Greet
     wishMe()
-
-    
-    query = "play songs"
+    query = "read my recent mail"
 
     # Email client
-    if 'read' in query and 'mails' in query:
+    if 'read' in query and 'mails' in query or 'mail' in query:
         print("New Mail?")
         while 1:
-            length = email.checkMail()
-            if length > 0:
-                speak(f"You got {length} mails")
-                print(email.readLatest())
-                break
-            time.sleep(60)
+            try:
+                length = email.checkMail()
+                if length > 0:
+                    speak(f"You got {length} mails")
+                    found = email.readLatest()
+                    print(found)
+                    speak(found)
+                    break
+                time.sleep(30)
+            except Exception as E:
+                speak("Retrying please wait")
+                length = email.checkMail()
+                if length > 0:
+                    speak(f"You got {length} mails")
+                    found = email.readLatest()
+                    print(found)
+                    speak(found)
 
     elif 'send' in query and 'email' in query:
         try:
