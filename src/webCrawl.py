@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import requests
 from summerizerRes import summery
 from speak import speak
+from gsearchapi import googleSearch
 
 # Search Query as URL
 def searchSite(site: str):
@@ -44,5 +45,5 @@ def getSummeryFromURL(url: str):
 
 # Search Query as Keyword
 def gSearch(query: str):
-    url = r'https://www.google.com/search?q="' + query + '"'
-    webbrowser.open_new_tab(url)
+    response = googleSearch(query)
+    webbrowser.open_new_tab(response["links"])
