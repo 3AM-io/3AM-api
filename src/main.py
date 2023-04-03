@@ -11,7 +11,7 @@ if __name__=="__main__" :
     
     # Greet
     wishMe()
-    query = "read my recent mail"
+    query = "read my latest mail"
 
     # Email client
     if 'read' in query and 'mails' in query or 'mail' in query:
@@ -20,20 +20,27 @@ if __name__=="__main__" :
             try:
                 length = email.checkMail()
                 if length > 0:
-                    speak(f"You got {length} mails")
+                    status = f"You got {length} mails"
+                    speak(status)
+                    print(status)
+                    
                     found = email.readLatest()
                     print(found)
                     speak(found)
                     break
-                time.sleep(30)
+                time.sleep(60)
             except Exception as E:
                 speak("Retrying please wait")
                 length = email.checkMail()
                 if length > 0:
-                    speak(f"You got {length} mails")
+                    status = f"You got {length} mails"
+                    speak(status)
+                    print(status)
+
                     found = email.readLatest()
                     print(found)
                     speak(found)
+                    break
 
     elif 'send' in query and 'email' in query:
         try:
@@ -48,14 +55,6 @@ if __name__=="__main__" :
         except Exception as e:
             print(e)
             speak("Sorry sir. I am not able to send this email")
-            
-    # Site Search
-    elif ('go to' in query):
-        site = query.replace("go to", "").strip()
-        try:
-            getSummeryFromURL(site)
-        except Exception as e:
-            speak("That web page does not exist")
     
     # Spotify play
     elif ('play songs' in query and 'spotify' in query):
@@ -75,9 +74,18 @@ if __name__=="__main__" :
             #video_query=takeCommand()
             video_query="Once upon a time"
             youtubeSearch(video_query)
+            
+    # Site Search
+    elif ('go to' in query):
+        site = query.replace("go to", "").strip()
+        try:
+            webbrowser.open_new_tab(site)
+            getSummeryFromURL(site)
+        except Exception as e:
+            speak("That web page does not exist")
     
     # Content search will be searched as a final executable
     else:
-        searchQuery = query
-        gSearch(searchQuery)
-
+        searchQuery = query.replace("search", "").strip()
+        result = gSearch(searchQuery)
+        speak(result)
