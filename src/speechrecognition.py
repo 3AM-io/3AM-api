@@ -18,4 +18,4 @@ def takeCommand():
          except:
              print("No voice found")    
          #query_new = query  
-     return query
+     return query.lower()
