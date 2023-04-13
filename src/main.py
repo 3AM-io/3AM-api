@@ -4,8 +4,7 @@ from email_own import sendEmail, email
 from wish_init import wishMe
 from webCrawl import *
 from youtube import youtubeSearch
-from spotify import playsong
-from wikipedia_search import search_wiki
+
 import time
 
 
@@ -14,10 +13,6 @@ if __name__=="__main__" :
     # Greet
     wishMe()
 
-    #Take the query
-    query = takeCommand()
-
-    # Email Read
     if 'read' in query and 'mails' in query or 'mail' in query:
         print("New Mail?")
         while 1:
@@ -45,8 +40,7 @@ if __name__=="__main__" :
                     print(found)
                     speak(found)
                     break
-        
-    # Email send
+
     elif 'send' in query and 'email' in query:
         try:
             speak("What should I say?")
@@ -71,9 +65,7 @@ if __name__=="__main__" :
             speak("which video to play")
         elif('play songs' in query):
             speak("which song to play")
-        video_query=takeCommand()
-        youtubeSearch(video_query)
-        
+
             
     # Site Search
     elif ('go to' in query):
@@ -84,18 +76,8 @@ if __name__=="__main__" :
         except Exception as e:
             speak("That web page does not exist")
 
-    # Wikipedia search
-    elif 'wikipedia' in query and 'search' in query:
-        speak("What content to be search")
-        wiki_query = takeCommand()
-        try:
-            search_wiki(wiki_query)
-        except:
-            speak("The content not available")
-
     # Content search will be searched as a final executable
     else:
         searchQuery = query.replace("search", "").strip()
         result = gSearch(searchQuery)
-        speak(result)
-       
+
