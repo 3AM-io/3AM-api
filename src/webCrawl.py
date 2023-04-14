@@ -1,10 +1,12 @@
 import webbrowser
 from bs4 import BeautifulSoup
-import os
+import re
 import requests
 from summerizerRes import summery
 from speak import speak
 from gsearchapi import googleSearch
+
+ansi_escape = re.compile("[^a-zA-Z' ]+")
 
 # Search Query as URL
 def searchSite(site: str):
@@ -27,23 +29,24 @@ def getSummeryFromURL(url: str):
     f = open(".tempResponse.html", "r")
     parsedContent = BeautifulSoup(f, 'html.parser')
     f.close()
-    os.unlink(f)
     # Get Summerized text
     resultList = []
     iter = 0
     for result in parsedContent.find('body').find_all('p'):
         iter += 1
-        resultList.append(str(result.text).replace(r"\n", " ").strip())
+        resultList.append(str(result.text).replace(r"\t", " ").replace(r"\n", " ").replace(r"\x", " ")
+                          .replace(r"\s", " ").strip())
 
-        if iter == 100:
+        if iter == 20:
             break
     
     if len(resultList) < 1:
         for result in parsedContent.find('body').find_all('div'):
             iter += 1
-            resultList.append(str(result.text).replace(r"\n", " ").strip())
+            resultList.append(str(result.text).replace(r"\t", " ").replace(r"\n", " ").replace(r"\x", " ")
+                              .replace(r"\s", " ").strip())
 
-            if iter == 100:
+            if iter == 20:
                 break
     
     summary = ''.join(resultList)
@@ -60,4 +63,5 @@ def gSearch(query: str):
     response = googleSearch(query)
     # webbrowser.open_new_tab(response["links"])
     print(response["links"])
-    return getSummeryFromURL(response["links"])
+    result = ansi_escape.sub('', getSummeryFromURL(response["links"]))
+    return result

@@ -1,0 +1,77 @@
+from speak import speak
+from speechrecognition import takeCommand
+from email_own import sendEmail, email
+from wish_init import wishMe
+from webCrawl import *
+from youtube import youtubeSearch
+from wikipedia_search import search_wiki
+import time
+
+def responseGen(query : str):
+    if 'read' in query and 'mails' in query or 'mail' in query:
+        SEARCH_LIMIT = 5
+        for i in range(SEARCH_LIMIT):
+            try:
+                length = email.checkMail()
+                if length > 0:
+                    status = f"You got {length} mails"
+                    found = email.readLatest()
+                    print(found)
+                    speak(found)
+                    break
+                time.sleep(60)
+            except Exception as E:
+                speak("Retrying please wait")
+                length = email.checkMail()
+                if length > 0:
+                    status = f"You got {length} mails"
+                    found = email.readLatest()
+                    print(found)
+                    speak(found)
+                    break
+
+    elif 'send' in query and 'email' in query:
+        try:
+            speak("What should I say?")
+            content = takeCommand()
+            speak("What is the receiver email id. Spell it")
+            to = takeCommand()
+            to_mail = to.replace(" ", "")
+            sendEmail(to_mail, content)
+            speak("Email has been sent")
+        except Exception as e:
+            speak("Sorry sir. I am not able to send this email")
+
+    # Spotify play
+    elif ('song' in query or 'spotify' in query):
+        speak("Which song to play")
+        song_name = takeCommand()
+        playsong(song_name)
+
+    # Youtube play
+    elif (('video' in query or 'song' in query) and 'youtube' in query):
+        if ('video' in query):
+            speak("which video to play")
+        elif ('song' in query):
+            speak("which song to play")
+            
+    # Wiki Search
+    elif ('wiki' in query or 'wikipedia' in query):
+        query = query.replace("wikipedia", "").replace("wiki", "").strip()
+        result = search_wiki(query)
+        speak(result)
+    
+    # Site Search
+    elif ('go to' in query):
+        site = query.replace("go to", "").strip()
+        try:
+            webbrowser.open_new_tab(site)
+            getSummeryFromURL(site)
+        except Exception as e:
+            speak("That web page does not exist")
+
+    # Content search will be searched as a final executable
+    else:
+        searchQuery = query.replace("search", "").strip()
+        result = gSearch(searchQuery)
+        speak(result)
