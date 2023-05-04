@@ -4,6 +4,10 @@ import time
 from bs4 import BeautifulSoup
 
 def sendEmail(to, content):
+    if 'at' in to and 'dot' in to:
+        to = to.replace("at", "@").replace("dot", ".").strip()
+    if '@' not in to:
+        to = to + "@gmail.com"
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo()
     server.starttls()
