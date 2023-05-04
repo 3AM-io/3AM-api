@@ -32,6 +32,7 @@ def googleSearch(query: str) -> object:
 
         for result in soup.select(".tF2Cxc"):
             title = result.select_one(".DKV0Md").text
+            links = ""
             try:
                 snippet = result.select_one(".lEBKkf span").text
             except:
@@ -40,6 +41,7 @@ def googleSearch(query: str) -> object:
 
             data.append({
                 "title": title,
+                "snippet": snippet,
                 "links": links
             })
 
