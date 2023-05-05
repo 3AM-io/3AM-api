@@ -8,7 +8,7 @@ from wikipedia_search import search_wiki
 import time
 
 def responseGen(query : str):
-    if 'read' in query and 'mails' in query or 'mail' in query:
+    if 'read' in query and ('mails' in query or 'mail' in query):
         SEARCH_LIMIT = 5
         for i in range(SEARCH_LIMIT):
             try:
@@ -30,11 +30,11 @@ def responseGen(query : str):
                     speak(found)
                     break
 
-    elif 'send' in query and 'email' in query:
+    elif 'send' in query and ('email' in query or 'mail' in query):
         try:
-            speak("What should I say?")
+            speak("What is the content of the mail")
             content = takeCommand()
-            speak("What is the receiver email id. Spell it")
+            speak("Please Spell the receiver mail id")
             to = takeCommand()
             to_mail = to.replace(" ", "")
             sendEmail(to_mail, content)
@@ -52,12 +52,15 @@ def responseGen(query : str):
     elif (('video' in query or 'song' in query) and 'youtube' in query):
         if ('video' in query):
             speak("which video to play")
+            query = takeCommand()
+            youtubeSearch(query)
         elif ('song' in query):
             speak("which song to play")
             
     # Wiki Search
     elif ('wiki' in query or 'wikipedia' in query):
-        query = query.replace("wikipedia", "").replace("wiki", "").strip()
+        speak('What to search')
+        query = takeCommand()
         result = search_wiki(query)
         speak(result)
     

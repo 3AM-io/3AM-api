@@ -34,6 +34,7 @@ def getSummeryFromURL(url: str):
     iter = 0
     for result in parsedContent.find('body').find_all('p'):
         iter += 1
+        resultList.append(re.sub(r'\\.*$', '', str(result.text)))
         resultList.append(str(result.text).replace(r"\t", " ").replace(r"\n", " ").replace(r"\x", " ")
                           .replace(r"\s", " ").strip())
 
@@ -43,6 +44,7 @@ def getSummeryFromURL(url: str):
     if len(resultList) < 1:
         for result in parsedContent.find('body').find_all('div'):
             iter += 1
+            resultList.append(re.sub(r'\\.*$', '', str(result.text)))
             resultList.append(str(result.text).replace(r"\t", " ").replace(r"\n", " ").replace(r"\x", " ")
                               .replace(r"\s", " ").strip())
 
@@ -62,6 +64,7 @@ def getSummeryFromURL(url: str):
 def gSearch(query: str):
     response = googleSearch(query)
     # webbrowser.open_new_tab(response["links"])
+    print(response)
     print(response["links"])
     result = ansi_escape.sub('', getSummeryFromURL(response["links"]))
     return result
