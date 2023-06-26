@@ -5,6 +5,7 @@ from wish_init import wishMe
 from webCrawl import *
 from youtube import youtubeSearch
 from wikipedia_search import search_wiki
+from spotify import playsong
 import time
 
 def responseGen(query : str):
@@ -52,6 +53,7 @@ def responseGen(query : str):
         speak("Which song to play")
         song_name = takeCommand()
         playsong(song_name)
+        return "Playing " + song_name
 
     # Youtube play
     elif (('video' in query or 'song' in query) and 'youtube' in query):
