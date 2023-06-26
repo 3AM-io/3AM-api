@@ -4,8 +4,7 @@ voices = engine.getProperty('voices') #gets you the details of the current voice
 engine.setProperty('voice', voices[1].id)  # 0-male voice , 1-female voice
 
 
-def speak(text):  
-     
-    engine.say(text)    
+def speak(text):
+    engine.say(text)
     engine.runAndWait()
-
+    return text

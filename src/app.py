@@ -1,80 +1,40 @@
-from speak import speak
+import tkinter as tk
+from tkinter import ttk
+from appController import responseGen
 from speechrecognition import takeCommand
-from email_own import sendEmail, email
-from wish_init import wishMe
-from webCrawl import *
-from youtube import youtubeSearch
-from wikipedia_search import search_wiki
-import time
+from threading import Thread
 
-def responseGen(query : str):
-    if 'read' in query and ('mails' in query or 'mail' in query):
-        SEARCH_LIMIT = 5
-        for i in range(SEARCH_LIMIT):
-            try:
-                length = email.checkMail()
-                if length > 0:
-                    status = f"You got {length} mails"
-                    found = email.readLatest()
-                    print(found)
-                    speak(found)
-                    break
-                time.sleep(60)
-            except Exception as E:
-                speak("Retrying please wait")
-                length = email.checkMail()
-                if length > 0:
-                    status = f"You got {length} mails"
-                    found = email.readLatest()
-                    print(found)
-                    speak(found)
-                    break
-
-    elif 'send' in query and ('email' in query or 'mail' in query):
-        try:
-            speak("What is the content of the mail")
-            content = takeCommand()
-            speak("Please Spell the receiver mail id")
-            to = takeCommand()
-            to_mail = to.replace(" ", "")
-            sendEmail(to_mail, content)
-            speak("Email has been sent")
-        except Exception as e:
-            speak("Sorry sir. I am not able to send this email")
-
-    # Spotify play
-    elif ('song' in query or 'spotify' in query):
-        speak("Which song to play")
-        song_name = takeCommand()
-        playsong(song_name)
-
-    # Youtube play
-    elif (('video' in query or 'song' in query) and 'youtube' in query):
-        if ('video' in query):
-            speak("which video to play")
-            query = takeCommand()
-            youtubeSearch(query)
-        elif ('song' in query):
-            speak("which song to play")
-            
-    # Wiki Search
-    elif ('wiki' in query or 'wikipedia' in query):
-        speak('What to search')
-        query = takeCommand()
-        result = search_wiki(query)
-        speak(result)
+class App(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master.geometry("500x500")
+        self.pack()
+        
+        # Menu pane title
+        self.menu = ttk.Frame(self, height=100, width=500)
+        self.menu.pack()
+        ttk.Label(self.menu, text="Vaider.ai").pack()
+        
+        # Content pan
+        self.contentPan = ttk.Frame(self, height=300, width=500)
+        self.contentPan.pack()
+        ttk.Label(self.contentPan, text="Content")
+        
+        # Footer (mic)
+        self.footer = ttk.Frame(self, height=100, width=500).pack()
+        ttk.Button(self.footer, text="Listen", command=self.listen).pack()
     
-    # Site Search
-    elif ('go to' in query):
-        site = query.replace("go to", "").strip()
-        try:
-            webbrowser.open_new_tab(site)
-            getSummeryFromURL(site)
-        except Exception as e:
-            speak("That web page does not exist")
+    def listenThread(self):
+        query = takeCommand()
+        ttk.Label(self.contentPan, text="User: " + query).pack()
+        response = responseGen(query)
+        ttk.Label(self.contentPan, text="Vaider: " + response).pack()
+    
+    def listen(self):
+        # log the in and out
+        thread = Thread(target=self.listenThread)
+        thread.start()
+        thread.join()
 
-    # Content search will be searched as a final executable
-    else:
-        searchQuery = query.replace("search", "").strip()
-        result = gSearch(searchQuery)
-        speak(result)
+app = App()
+app.mainloop()
