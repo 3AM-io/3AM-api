@@ -1,9 +1,9 @@
-# 3AM-api
+# vaider-app
 ~ A minimal voice assistant for the purpose of university project.
 
 - [x] Speech and tts
 - [x] Email send
 - [x] Email receive
 - [x] Youtube
-- [ ] Spotify
-- [ ] Wikipedia
+- [x] Spotify
+- [x] Wikipedia
