@@ -1,4 +1,0 @@
-any possibility to attach documents in mail client
-
-idk why this googlesearch apis are not working
-    have to do manual
