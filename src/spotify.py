@@ -1,10 +1,14 @@
+import os
 import spotipy
 import webbrowser
 from speak import speak
+from dotenv import load_dotenv
 
-username = '31rfusqn6dckrdbpfe62pzobstsm'
-clientID = '3d2a5826408042cc89bafb682228070f'
-clientSecret = 'daabaa443904471589c0a79bed1ef927'
+load_dotenv()
+username = os.environ.get('SPOTIFY_USERNAME')
+clientID = os.environ.get('SPOTIFY_CLIENT_ID')
+clientSecret = os.environ.get('SPOTIFY_SECRET')
+
 redirect_uri = 'http://google.com/callback/'
 oauth_object = spotipy.SpotifyOAuth(clientID, clientSecret, redirect_uri)
 token_dict = oauth_object.get_access_token()
