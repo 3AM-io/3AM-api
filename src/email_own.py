@@ -1,7 +1,9 @@
+import os
 import smtplib
 import imaplib
 import time
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
 
 def sendEmail(to, content):
     if 'at' in to and 'dot' in to:
@@ -25,7 +27,7 @@ class Mail:
         
     def checkMail(self) -> int:
         self.M.select('inbox')
-        self.unRead = self.M.search(None, '(UNSEEN FROM "narayanandvsurya@gmail.com" SUBJECT "Test")')
+        self.unRead = self.M.search(None, '(UNSEEN)')
         print(len(self.unRead[1][0].split()))
         return len(self.unRead[1][0].split())
 
@@ -44,4 +46,7 @@ class Mail:
         # print(parsedContent.prettify() + '\n\n\n')
         return result
 
-email = Mail('dbvenkat857@gmail.com', "qlmrnzadkwfzbhqh")
+load_dotenv()
+senderMail = os.environ.get('SENDER_MAIL')
+senderPass = os.environ.get('SENDER_PASS')
+email = Mail(senderMail, senderPass)
